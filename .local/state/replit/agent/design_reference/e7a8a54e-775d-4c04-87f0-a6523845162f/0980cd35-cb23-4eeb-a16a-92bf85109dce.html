@@ -1,0 +1,536 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedStudy Pro - MCQ & Surgery Secrets</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1976D2',
+                        secondary: '#388E3C',
+                        accent: '#F57C00',
+                        error: '#D32F2F',
+                        success: '#4CAF50'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        };
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- @COMPONENT: AppHeader -->
+    <header class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+                        <i class="fas fa-stethoscope text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">MedStudy Pro</h1>
+                        <p class="text-xs text-gray-500">Surgery Education Platform</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <!-- @FUNCTIONALITY: Search should filter questions and surgery points -->
+                    <div class="relative">
+                        <input type="text" placeholder="Search topics..." 
+                               class="pl-10 pr-4 py-2 w-64 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                               data-mock="true">
+                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                    </div>
+                    
+                    <button class="p-2 text-gray-600 hover:text-gray-900 relative">
+                        <i class="fas fa-bookmark text-lg"></i>
+                        <span class="absolute -top-1 -right-1 bg-accent text-white text-xs rounded-full w-5 h-5 flex items-center justify-center" data-bind="bookmarkCount">3</span>
+                    </button>
+                    
+                    <button class="p-2 text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-chart-line text-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- @END_COMPONENT: AppHeader -->
+
+    <!-- @COMPONENT: MainNavigation -->
+    <nav class="bg-white border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex space-x-8">
+                <button class="py-4 px-2 border-b-2 border-primary text-primary font-medium text-sm" 
+                        data-tab="mcq" data-event="click:switchTab">
+                    <i class="fas fa-question-circle mr-2"></i>
+                    MCQ Practice
+                </button>
+                <button class="py-4 px-2 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium text-sm"
+                        data-tab="secrets" data-event="click:switchTab">
+                    <i class="fas fa-lightbulb mr-2"></i>
+                    Surgery Secrets
+                </button>
+            </div>
+        </div>
+    </nav>
+    <!-- @END_COMPONENT: MainNavigation -->
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- @COMPONENT: MCQSection -->
+        <div id="mcq-section" class="space-y-6">
+            <!-- Progress Dashboard -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-900">MCQ Practice</h2>
+                        <p class="text-gray-600">Test your knowledge with practice questions</p>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-4">
+                        <div class="bg-primary/10 rounded-lg p-4 text-center min-w-[120px]">
+                            <div class="text-2xl font-bold text-primary" data-bind="totalQuestions">1,247</div>
+                            <div class="text-sm text-gray-600">Total Questions</div>
+                        </div>
+                        <div class="bg-secondary/10 rounded-lg p-4 text-center min-w-[120px]">
+                            <div class="text-2xl font-bold text-secondary" data-bind="correctAnswers">892</div>
+                            <div class="text-sm text-gray-600">Correct Answers</div>
+                        </div>
+                        <div class="bg-accent/10 rounded-lg p-4 text-center min-w-[120px]">
+                            <div class="text-2xl font-bold text-accent" data-bind="accuracyRate">71%</div>
+                            <div class="text-sm text-gray-600">Accuracy Rate</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Topic Categories -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                <!-- @MAP: topics.map(topic => ( -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow cursor-pointer"
+                     data-event="click:selectTopic">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-semibold text-gray-900" data-mock="true">Breast Surgery</h3>
+                        <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full" data-mock="true">11 Q</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                        <div class="bg-secondary h-2 rounded-full" style="width: 73%" data-mock="true"></div>
+                    </div>
+                    <div class="flex justify-between text-sm text-gray-600">
+                        <span data-mock="true">8/11 completed</span>
+                        <span data-mock="true">73% accuracy</span>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow cursor-pointer">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-semibold text-gray-900" data-mock="true">Cardiovascular</h3>
+                        <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full" data-mock="true">15 Q</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                        <div class="bg-accent h-2 rounded-full" style="width: 47%" data-mock="true"></div>
+                    </div>
+                    <div class="flex justify-between text-sm text-gray-600">
+                        <span data-mock="true">7/15 completed</span>
+                        <span data-mock="true">85% accuracy</span>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow cursor-pointer">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-semibold text-gray-900" data-mock="true">GI Surgery</h3>
+                        <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full" data-mock="true">23 Q</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                        <div class="bg-error h-2 rounded-full" style="width: 26%" data-mock="true"></div>
+                    </div>
+                    <div class="flex justify-between text-sm text-gray-600">
+                        <span data-mock="true">6/23 completed</span>
+                        <span data-mock="true">67% accuracy</span>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow cursor-pointer">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-semibold text-gray-900" data-mock="true">Trauma Surgery</h3>
+                        <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full" data-mock="true">18 Q</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                        <div class="bg-gray-300 h-2 rounded-full" style="width: 0%" data-mock="true"></div>
+                    </div>
+                    <div class="flex justify-between text-sm text-gray-600">
+                        <span data-mock="true">0/18 completed</span>
+                        <span data-mock="true">--</span>
+                    </div>
+                </div>
+                <!-- @END_MAP )) -->
+            </div>
+
+            <!-- Current Question Card -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center space-x-4">
+                        <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium" data-mock="true">Breast Surgery</span>
+                        <span class="text-gray-600" data-mock="true">Question 1 of 11</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button class="p-2 text-gray-400 hover:text-accent" data-event="click:toggleBookmark">
+                            <i class="fas fa-bookmark"></i>
+                        </button>
+                        <div class="flex items-center space-x-2 text-sm text-gray-600">
+                            <i class="fas fa-clock"></i>
+                            <span data-bind="timer">2:34</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4" data-mock="true">
+                            After intraductal papilloma, unilateral bloody nipple discharge from one duct orifice is most commonly caused by which of the following pathologic conditions?
+                        </h3>
+                        
+                        <div class="space-y-3">
+                            <label class="flex items-start space-x-3 p-4 rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors">
+                                <input type="radio" name="answer" value="A" class="mt-1 text-primary focus:ring-primary">
+                                <div>
+                                    <div class="font-medium text-gray-900" data-mock="true">A.</div>
+                                    <div class="text-gray-700" data-mock="true">Paget's disease of the nipple.</div>
+                                </div>
+                            </label>
+                            
+                            <label class="flex items-start space-x-3 p-4 rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors">
+                                <input type="radio" name="answer" value="B" class="mt-1 text-primary focus:ring-primary">
+                                <div>
+                                    <div class="font-medium text-gray-900" data-mock="true">B.</div>
+                                    <div class="text-gray-700" data-mock="true">Intraductal carcinoma.</div>
+                                </div>
+                            </label>
+                            
+                            <label class="flex items-start space-x-3 p-4 rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors">
+                                <input type="radio" name="answer" value="C" class="mt-1 text-primary focus:ring-primary">
+                                <div>
+                                    <div class="font-medium text-gray-900" data-mock="true">C.</div>
+                                    <div class="text-gray-700" data-mock="true">Inflammatory carcinoma.</div>
+                                </div>
+                            </label>
+                            
+                            <label class="flex items-start space-x-3 p-4 rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors">
+                                <input type="radio" name="answer" value="D" class="mt-1 text-primary focus:ring-primary">
+                                <div>
+                                    <div class="font-medium text-gray-900" data-mock="true">D.</div>
+                                    <div class="text-gray-700" data-mock="true">Subareolar mastitis.</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between">
+                        <button class="px-6 py-2 text-gray-600 hover:text-gray-900 font-medium" data-event="click:previousQuestion">
+                            <i class="fas fa-chevron-left mr-2"></i>Previous
+                        </button>
+                        <button class="px-8 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 font-medium" data-event="click:submitAnswer">
+                            Submit Answer
+                        </button>
+                        <button class="px-6 py-2 text-gray-600 hover:text-gray-900 font-medium" data-event="click:nextQuestion">
+                            Next<i class="fas fa-chevron-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Answer Explanation Modal (Hidden by default) -->
+            <div class="hidden bg-white rounded-xl shadow-sm border border-gray-200 p-6" id="explanation-card">
+                <div class="flex items-center justify-between mb-4">
+                    <h4 class="text-lg font-semibold text-gray-900">Answer Explanation</h4>
+                    <div class="flex items-center space-x-2">
+                        <span class="bg-secondary/10 text-secondary px-3 py-1 rounded-full text-sm font-medium">Correct</span>
+                        <button class="p-1 text-gray-400 hover:text-gray-600" data-event="click:closeExplanation">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="space-y-3">
+                    <p class="text-gray-700" data-mock="true">
+                        <strong>Correct Answer: B. Intraductal carcinoma.</strong>
+                    </p>
+                    <p class="text-gray-700 leading-relaxed" data-mock="true">
+                        Nipple discharge is surgically significant when it is grossly bloody and when it appears at a single duct orifice on one nipple. Bloody discharge is usually due to a benign intraductal papilloma; however, intraductal carcinoma in the large ducts under the nipple can be the cause of bloody discharge, and pathologically the lesion is frequently a large papillary tumor that has become malignant.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: MCQSection -->
+
+        <!-- @COMPONENT: SecretsSection -->
+        <div id="secrets-section" class="hidden space-y-6">
+            <!-- Secrets Dashboard -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-900">Surgery Secrets</h2>
+                        <p class="text-gray-600">Essential surgical knowledge points</p>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-4">
+                        <div class="bg-accent/10 rounded-lg p-4 text-center min-w-[120px]">
+                            <div class="text-2xl font-bold text-accent" data-bind="totalSecrets">100</div>
+                            <div class="text-sm text-gray-600">Total Secrets</div>
+                        </div>
+                        <div class="bg-secondary/10 rounded-lg p-4 text-center min-w-[120px]">
+                            <div class="text-2xl font-bold text-secondary" data-bind="readSecrets">67</div>
+                            <div class="text-sm text-gray-600">Read</div>
+                        </div>
+                        <div class="bg-primary/10 rounded-lg p-4 text-center min-w-[120px]">
+                            <div class="text-2xl font-bold text-primary" data-bind="bookmarkedSecrets">12</div>
+                            <div class="text-sm text-gray-600">Bookmarked</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter and Sort -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
+                    <div class="flex flex-wrap gap-2">
+                        <button class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium">All Topics</button>
+                        <button class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm hover:bg-gray-50" data-mock="true">Cardiovascular</button>
+                        <button class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm hover:bg-gray-50" data-mock="true">GI Surgery</button>
+                        <button class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm hover:bg-gray-50" data-mock="true">Trauma</button>
+                        <button class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm hover:bg-gray-50" data-mock="true">Pediatric</button>
+                    </div>
+                    
+                    <div class="flex items-center space-x-2">
+                        <span class="text-sm text-gray-600">Sort by:</span>
+                        <select class="border border-gray-300 rounded-lg px-3 py-1 text-sm focus:ring-2 focus:ring-primary focus:border-transparent">
+                            <option>Number</option>
+                            <option>Topic</option>
+                            <option>Bookmarked</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Surgery Secrets List -->
+            <div class="space-y-4">
+                <!-- @MAP: secrets.map(secret => ( -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-3 mb-3">
+                                <span class="bg-primary/10 text-primary font-bold text-sm px-3 py-1 rounded-full" data-mock="true">#1</span>
+                                <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full" data-mock="true">Brain Death</span>
+                            </div>
+                            <p class="text-gray-800 leading-relaxed" data-mock="true">
+                                Clinical determinants of brain death are the loss of the papillary, corneal, oculovestibular, oculocephalic, oropharyngeal, and respiratory reflexes for > 6 hours. The patient should also undergo an apnea test, in which the pCO₂ is allowed to rise to at least 60 mmHg without coexistent hypoxia.
+                            </p>
+                        </div>
+                        <div class="flex flex-col items-end space-y-2 ml-4">
+                            <button class="p-2 text-gray-400 hover:text-accent" data-event="click:toggleSecretBookmark">
+                                <i class="fas fa-bookmark"></i>
+                            </button>
+                            <button class="p-2 text-gray-400 hover:text-gray-600" data-event="click:markAsRead">
+                                <i class="fas fa-check-circle"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-3 mb-3">
+                                <span class="bg-primary/10 text-primary font-bold text-sm px-3 py-1 rounded-full" data-mock="true">#2</span>
+                                <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full" data-mock="true">Blood Transfusion</span>
+                            </div>
+                            <p class="text-gray-800 leading-relaxed" data-mock="true">
+                                The estimated risks of HBV, HCV, and HIV transmission by blood transfusion in the United States are 1 in 205,000 for HBV, 1 in 1,935,000 for HCV, and 1 in 2,135,000 for HIV.
+                            </p>
+                        </div>
+                        <div class="flex flex-col items-end space-y-2 ml-4">
+                            <button class="p-2 text-accent" data-event="click:toggleSecretBookmark">
+                                <i class="fas fa-bookmark"></i>
+                            </button>
+                            <button class="p-2 text-secondary" data-event="click:markAsRead">
+                                <i class="fas fa-check-circle"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-3 mb-3">
+                                <span class="bg-primary/10 text-primary font-bold text-sm px-3 py-1 rounded-full" data-mock="true">#3</span>
+                                <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full" data-mock="true">Pediatric Urology</span>
+                            </div>
+                            <p class="text-gray-800 leading-relaxed" data-mock="true">
+                                The most common location of an undescended testicle is the inguinal canal.
+                            </p>
+                        </div>
+                        <div class="flex flex-col items-end space-y-2 ml-4">
+                            <button class="p-2 text-gray-400 hover:text-accent" data-event="click:toggleSecretBookmark">
+                                <i class="fas fa-bookmark"></i>
+                            </button>
+                            <button class="p-2 text-gray-400 hover:text-gray-600" data-event="click:markAsRead">
+                                <i class="fas fa-check-circle"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-3 mb-3">
+                                <span class="bg-primary/10 text-primary font-bold text-sm px-3 py-1 rounded-full" data-mock="true">#38</span>
+                                <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full" data-mock="true">Breast Cancer</span>
+                            </div>
+                            <p class="text-gray-800 leading-relaxed" data-mock="true">
+                                The "triple negative test" or "diagnostic triad" for diagnosing a palpable breast mass includes physical examination, breast imaging, and biopsy.
+                            </p>
+                        </div>
+                        <div class="flex flex-col items-end space-y-2 ml-4">
+                            <button class="p-2 text-gray-400 hover:text-accent" data-event="click:toggleSecretBookmark">
+                                <i class="fas fa-bookmark"></i>
+                            </button>
+                            <button class="p-2 text-secondary" data-event="click:markAsRead">
+                                <i class="fas fa-check-circle"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- @END_MAP )) -->
+            </div>
+
+            <!-- Load More Button -->
+            <div class="text-center py-6">
+                <button class="px-8 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium" data-event="click:loadMoreSecrets">
+                    Load More Secrets
+                </button>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: SecretsSection -->
+    </main>
+
+    <!-- @COMPONENT: FloatingActionMenu -->
+    <div class="fixed bottom-6 right-6 z-40">
+        <div class="flex flex-col items-end space-y-3">
+            <!-- Quick Stats -->
+            <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-4 mb-2 hidden" id="quick-stats">
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-primary" data-bind="dailyProgress">8/12</div>
+                    <div class="text-xs text-gray-600">Daily Goal</div>
+                </div>
+            </div>
+            
+            <!-- FAB Menu -->
+            <button class="w-14 h-14 bg-primary text-white rounded-full shadow-lg hover:bg-blue-700 flex items-center justify-center" data-event="click:toggleFABMenu">
+                <i class="fas fa-chart-bar text-lg"></i>
+            </button>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: FloatingActionMenu -->
+
+    <script>
+        (function() {
+            // Tab switching functionality
+            document.addEventListener('click', function(e) {
+                const tabButton = e.target.closest('[data-tab]');
+                if (tabButton) {
+                    const targetTab = tabButton.dataset.tab;
+                    
+                    // Update tab buttons
+                    document.querySelectorAll('[data-tab]').forEach(btn => {
+                        btn.className = btn.className.replace('border-primary text-primary', 'border-transparent text-gray-500 hover:text-gray-700');
+                    });
+                    tabButton.className = tabButton.className.replace('border-transparent text-gray-500 hover:text-gray-700', 'border-primary text-primary');
+                    
+                    // Show/hide sections
+                    document.getElementById('mcq-section').style.display = targetTab === 'mcq' ? 'block' : 'none';
+                    document.getElementById('secrets-section').style.display = targetTab === 'secrets' ? 'block' : 'none';
+                }
+            });
+
+            // Answer selection feedback
+            document.addEventListener('change', function(e) {
+                if (e.target.type === 'radio' && e.target.name === 'answer') {
+                    // TODO: Implement answer selection logic
+                    console.log('Answer selected:', e.target.value);
+                }
+            });
+
+            // Submit answer functionality
+            document.addEventListener('click', function(e) {
+                if (e.target.matches('[data-event*="submitAnswer"]')) {
+                    const selectedAnswer = document.querySelector('input[name="answer"]:checked');
+                    if (selectedAnswer) {
+                        // TODO: Implement answer validation and show explanation
+                        document.getElementById('explanation-card').classList.remove('hidden');
+                        console.log('Submitting answer:', selectedAnswer.value);
+                    } else {
+                        alert('Please select an answer first.');
+                    }
+                }
+            });
+
+            // Bookmark toggle functionality
+            document.addEventListener('click', function(e) {
+                if (e.target.matches('[data-event*="toggleBookmark"]') || e.target.matches('[data-event*="toggleSecretBookmark"]')) {
+                    e.target.classList.toggle('text-accent');
+                    e.target.classList.toggle('text-gray-400');
+                    // TODO: Implement bookmark persistence
+                    console.log('Bookmark toggled');
+                }
+            });
+
+            // Mark as read functionality
+            document.addEventListener('click', function(e) {
+                if (e.target.matches('[data-event*="markAsRead"]')) {
+                    e.target.classList.remove('text-gray-400');
+                    e.target.classList.add('text-secondary');
+                    // TODO: Implement read state persistence
+                    console.log('Marked as read');
+                }
+            });
+
+            // Timer functionality (mock)
+            let timeElapsed = 154; // 2:34 in seconds
+            setInterval(() => {
+                timeElapsed++;
+                const minutes = Math.floor(timeElapsed / 60);
+                const seconds = timeElapsed % 60;
+                const timerElement = document.querySelector('[data-bind="timer"]');
+                if (timerElement) {
+                    timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                }
+            }, 1000);
+
+            // FAB menu toggle
+            document.addEventListener('click', function(e) {
+                if (e.target.matches('[data-event*="toggleFABMenu"]')) {
+                    const quickStats = document.getElementById('quick-stats');
+                    quickStats.classList.toggle('hidden');
+                }
+            });
+
+            // Close explanation
+            document.addEventListener('click', function(e) {
+                if (e.target.matches('[data-event*="closeExplanation"]')) {
+                    document.getElementById('explanation-card').classList.add('hidden');
+                }
+            });
+
+            // Initialize default state
+            document.getElementById('secrets-section').style.display = 'none';
+        })();
+    </script>
+</body>
+</html>

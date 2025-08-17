@@ -1,0 +1,19 @@
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Cordova / Ionic
+platforms/
+plugins/
+www/plugins/
+
+# Build
+dist/
+build/
+*.apk
+*.aab
+
+# OS
+.DS_Store
+Thumbs.db

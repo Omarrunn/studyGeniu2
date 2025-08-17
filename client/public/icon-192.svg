@@ -1,0 +1,7 @@
+<svg width="192" height="192" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="192" height="192" rx="24" fill="#3B82F6"/>
+  <path d="M96 45C85.5 45 77 53.5 77 64V96C77 106.5 85.5 115 96 115C106.5 115 115 106.5 115 96V64C115 53.5 106.5 45 96 45ZM96 57C99.9 57 103 60.1 103 64V96C103 99.9 99.9 103 96 103C92.1 103 89 99.9 89 96V64C89 60.1 92.1 57 96 57Z" fill="white"/>
+  <circle cx="96" cy="135" r="12" fill="white"/>
+  <path d="M60 85H75V100H60V85ZM117 85H132V100H117V85Z" fill="white"/>
+  <text x="96" y="165" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12" font-weight="bold">MedQuiz</text>
+</svg>

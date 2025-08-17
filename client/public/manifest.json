@@ -1,0 +1,41 @@
+{
+  "name": "MedQuiz Pro",
+  "short_name": "MedQuiz",
+  "description": "Medical education app with MCQs and surgery secrets",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "medical", "health"],
+  "shortcuts": [
+    {
+      "name": "MCQ Practice",
+      "short_name": "MCQs",
+      "description": "Practice medical questions",
+      "url": "/?section=mcq",
+      "icons": [{ "src": "/icon-192.svg", "sizes": "192x192" }]
+    },
+    {
+      "name": "Surgery Secrets",
+      "short_name": "Secrets",
+      "description": "Browse surgery secrets",
+      "url": "/?section=secrets",
+      "icons": [{ "src": "/icon-192.svg", "sizes": "192x192" }]
+    }
+  ]
+}
